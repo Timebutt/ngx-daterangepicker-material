@@ -34,8 +34,8 @@ export class ReactiveFormMultiSelectExample {
         ],
     });
     locale: LocaleConfig = {
-        format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
-        displayFormat: 'YYYY-MM-DD',
+        format: 'yyyy-MM-ddTHH:mm:ss.SSSSZ',
+        displayFormat: 'yyyy-MM-dd',
     };
 
     constructor(private fb: FormBuilder) {}

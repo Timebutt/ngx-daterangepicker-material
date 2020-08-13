@@ -1,6 +1,4 @@
-import { InjectionToken, Injector } from '@angular/core';
-import * as _moment from 'moment';
-const moment = _moment;
+import { InjectionToken } from '@angular/core';
 
 export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.config');
 /**

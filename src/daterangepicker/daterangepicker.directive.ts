@@ -17,14 +17,11 @@ import {
     ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-
-const moment = _moment;
 
 @Directive({
     selector: 'input[ngxDaterangepickerMd]',
@@ -52,9 +49,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private componentRef: ComponentRef<DaterangepickerComponent>;
 
     @Input()
-    minDate: _moment.Moment;
+    minDate: Date;
     @Input()
-    maxDate: _moment.Moment;
+    maxDate: Date;
     @Input()
     autoApply: boolean;
     @Input()
@@ -73,12 +70,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     showISOWeekNumbers: boolean;
     @Input()
     showDropdowns: boolean;
-    @Input()
-    isInvalidDate = (date: _moment.Moment) => false;
-    @Input()
-    isCustomDate = (date: _moment.Moment) => false;
-    @Input()
-    isTooltipDate = (date: _moment.Moment) => null;
     @Input()
     showClearButton: boolean;
     @Input()
@@ -150,11 +141,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    @Output('change') onChange: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output('rangeClicked') rangeClicked: EventEmitter<{ label: string; dates: [_moment.Moment, _moment.Moment] }> = new EventEmitter();
-    @Output('datesUpdated') datesUpdated: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
+    @Input()
+    isInvalidDate = (date: Date) => false;
+    @Input()
+    isCustomDate = (date: Date) => false;
+    @Input()
+    isTooltipDate = (date: Date) => null;
+
+    @Output('change') onChange: EventEmitter<{ startDate: Date; endDate: Date }> = new EventEmitter();
+    @Output('rangeClicked') rangeClicked: EventEmitter<{ label: string; dates: [Date, Date] }> = new EventEmitter();
+    @Output('datesUpdated') datesUpdated: EventEmitter<{ startDate: Date; endDate: Date }> = new EventEmitter();
+    @Output() startDateChanged: EventEmitter<{ startDate: Date }> = new EventEmitter();
+    @Output() endDateChanged: EventEmitter<{ endDate: Date }> = new EventEmitter();
 
     destroy$ = new Subject();
 
@@ -281,7 +279,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef.instance.startDateChanged
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((itemChanged: { startDate: _moment.Moment }) => {
+            .subscribe((itemChanged: { startDate: Date }) => {
                 this.startDateChanged.emit(itemChanged);
             });
 
@@ -361,7 +359,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    writeValue(value: { startDate: _moment.Moment | string; endDate: _moment.Moment | string } | _moment.Moment): void {
+    writeValue(value: { startDate: Date | string; endDate: Date | string } | Date): void {
         if (_moment.isMoment(value)) {
             this.value = { startDate: value };
         } else if (value) {
@@ -380,7 +378,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._onTouched = fn;
     }
 
-    private setValue(value: { startDate: _moment.Moment; endDate: _moment.Moment }): void {
+    private setValue(value: { startDate: Date; endDate: Date }): void {
         if (this.componentRef) {
             if (value) {
                 if (value[this._startKey]) {
@@ -431,7 +429,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    calculateChosenLabel(startDate: _moment.Moment, endDate: _moment.Moment): string {
+    calculateChosenLabel(startDate: Date, endDate: Date): string {
         const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
 
         if (this.singleDatePicker) {
