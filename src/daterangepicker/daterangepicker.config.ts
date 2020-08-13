@@ -29,7 +29,7 @@ export const DefaultLocaleConfig: LocaleConfig = {
     cancelLabel: 'Cancel',
     clearLabel: 'Clear',
     customRangeLabel: 'Custom range',
-    daysOfWeek: moment.weekdaysMin(),
-    monthNames: moment.monthsShort(),
-    firstDay: moment.localeData().firstDayOfWeek(),
+    daysOfWeek: [],
+    monthNames: [],
+    firstDay: 1,
 };

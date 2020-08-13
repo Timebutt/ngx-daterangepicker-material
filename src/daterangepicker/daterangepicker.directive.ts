@@ -360,7 +360,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     writeValue(value: { startDate: Date | string; endDate: Date | string } | Date): void {
-        if (_moment.isMoment(value)) {
+        console.log(value);
+        if (value instanceof Date) {
             this.value = { startDate: value };
         } else if (value) {
             this.value = { startDate: moment(value.startDate), endDate: moment(value.endDate) };
@@ -433,11 +434,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
 
         if (this.singleDatePicker) {
-            return startDate.format(format);
+            return format(startDate, format);
         }
 
         if (startDate && endDate) {
-            return startDate.format(format) + this.locale.separator + endDate.format(format);
+            return format(startDate, format) + this.locale.separator + format(endDate, format);
         }
 
         return null;
@@ -450,9 +451,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.locale = { ...this._localeService.config, ...this.locale };
         if (!this.locale.format) {
             if (this.timePicker) {
-                this.locale.format = _moment.localeData().longDateFormat('lll');
+                this.locale.format = 'lll';
             } else {
-                this.locale.format = _moment.localeData().longDateFormat('L');
+                this.locale.format = 'L';
             }
         }
     }

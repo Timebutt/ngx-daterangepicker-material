@@ -64,8 +64,8 @@
                                             [value]="m"
                                             [disabled]="
                                                 (calendarVariables.left.dropdowns.inMinYear &&
-                                                    m < calendarVariables.left.minDate.month()) ||
-                                                (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())
+                                                    m < getMonth(calendarVariables.left.minDate)) ||
+                                                (calendarVariables.left.dropdowns.inMaxYear && m > getMonth(calendarVariables.left.maxDate))
                                             "
                                         >
                                             {{ locale.monthNames[m] }}
@@ -81,8 +81,8 @@
                                 </div>
                             </ng-container>
                             <ng-container *ngIf="!showDropdowns || !calendarVariables.left.dropdowns">
-                                {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
-                                {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
+                                {{ this.locale.monthNames[getMonth((calendarVariables?.left?.calendar)[1][1])] }}
+                                {{ format((calendarVariables?.left?.calendar)[1][1], ' yyyy') }}
                             </ng-container>
                         </th>
                         <ng-container
@@ -248,8 +248,9 @@
                                             *ngFor="let m of calendarVariables.right.dropdowns.monthArrays"
                                             [disabled]="
                                                 (calendarVariables.right.dropdowns.inMinYear &&
-                                                    m < calendarVariables.right.minDate.month()) ||
-                                                (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())
+                                                    m < getMonth(calendarVariables.right.minDate)) ||
+                                                (calendarVariables.right.dropdowns.inMaxYear &&
+                                                    m > getMonth(calendarVariables.right.maxDate))
                                             "
                                             [value]="m"
                                         >
@@ -266,8 +267,8 @@
                                 </div>
                             </ng-container>
                             <ng-container *ngIf="!showDropdowns || !calendarVariables.right.dropdowns">
-                                {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
-                                {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
+                                {{ this.locale.monthNames[getMonth((calendarVariables?.right?.calendar)[1][1])] }}
+                                {{ format((calendarVariables?.right?.calendar)[1][1], ' yyyy') }}
                             </ng-container>
                         </th>
                         <ng-container
