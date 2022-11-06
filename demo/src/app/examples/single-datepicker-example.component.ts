@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import * as moment from 'moment';
-import * as localization from 'moment/locale/fr';
 import { LocaleConfig } from '../../../../src/daterangepicker';
-moment.locale('fr', localization);
 
 @Component({
     selector: 'example-single-datepicker',

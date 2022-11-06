@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -29,19 +29,13 @@ import * as moment from 'moment';
             </mat-form-field>
             {{ selected | json }}
             <div>
-                <mat-checkbox formControlName="alwaysShowCalendars">
-                    alwaysShowCalendars
-                </mat-checkbox>
+                <mat-checkbox formControlName="alwaysShowCalendars"> alwaysShowCalendars </mat-checkbox>
             </div>
             <div>
-                <mat-checkbox formControlName="keepCalendarOpeningWithRange">
-                    keepCalendarOpeningWithRange
-                </mat-checkbox>
+                <mat-checkbox formControlName="keepCalendarOpeningWithRange"> keepCalendarOpeningWithRange </mat-checkbox>
             </div>
             <div>
-                <mat-checkbox formControlName="showRangeLabelOnInput">
-                    showRangeLabelOnInput
-                </mat-checkbox>
+                <mat-checkbox formControlName="showRangeLabelOnInput"> showRangeLabelOnInput </mat-checkbox>
             </div>
         </form>
     `,
@@ -72,7 +66,7 @@ export class CustomRangesExampleComponent {
         showRangeLabelOnInput: true,
     });
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(private formBuilder: UntypedFormBuilder) {}
 
     isInvalidDate = (m: moment.Moment) => {
         return this.invalidDates.some((d) => d.isSame(m, 'day'));

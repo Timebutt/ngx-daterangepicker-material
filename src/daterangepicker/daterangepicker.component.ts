@@ -178,7 +178,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
     constructor(private el: ElementRef, private _ref: ChangeDetectorRef, private _localeService: LocaleService) {}
 
-    destroy$ = new Subject();
+    destroy$ = new Subject<void>();
 
     ngOnInit(): void {
         this.fromMonthControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((month) => {

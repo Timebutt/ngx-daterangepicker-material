@@ -8,7 +8,7 @@
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
 import { addModuleImportToRootModule, getProjectFromWorkspace } from '@angular/cdk/schematics';
-import { getWorkspace } from '@schematics/angular/utility/config';
+import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 const moduleName = 'NgxDaterangepickerMd';
 
@@ -19,7 +19,7 @@ const moduleName = 'NgxDaterangepickerMd';
  *  - Adds Browser Animation to app.module
  */
 export default function (options: any): Rule {
-    return chain([addDateRangePickerModule(options)]);
+    return chain([addDateRangePickerModule(options) as any]);
 }
 
 /**
@@ -28,8 +28,8 @@ export default function (options: any): Rule {
  * components of Angular Material will throw an exception.
  */
 function addDateRangePickerModule(options: any) {
-    return (host: Tree) => {
-        const workspace = getWorkspace(host);
+    return async (host: Tree) => {
+        const workspace = await getWorkspace(host);
         const project = getProjectFromWorkspace(workspace, options.project);
 
         addModuleImportToRootModule(host, moduleName, 'ngx-daterangepicker-material', project);

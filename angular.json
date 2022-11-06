@@ -58,7 +58,6 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "aot": true,
                             "extractLicenses": true,
@@ -70,6 +69,14 @@
                                     "with": "demo/src/environments/environment.prod.ts"
                                 }
                             ]
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
                         }
                     }
                 },
@@ -81,8 +88,12 @@
                     "configurations": {
                         "production": {
                             "browserTarget": "ngx-daterangepicker-material:build:production"
+                        },
+                        "development": {
+                            "browserTarget": "ngx-daterangepicker-material:build:development"
                         }
-                    }
+                    },
+                    "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -139,7 +150,6 @@
             }
         }
     },
-    "defaultProject": "ngx-daterangepicker-material",
     "schematics": {
         "@schematics/angular:component": {
             "prefix": "",

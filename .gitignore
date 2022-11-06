@@ -8,6 +8,7 @@
 /tmp
 /out-tsc
 /schematics/dist
+/.angular/cache
 
 # dependencies
 /node_modules

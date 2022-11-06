@@ -156,7 +156,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
     @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
 
-    destroy$ = new Subject();
+    destroy$ = new Subject<void>();
 
     constructor(
         public viewContainerRef: ViewContainerRef,
