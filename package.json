@@ -1,6 +1,6 @@
 {
-  "name": "ngx-daterangepicker-material",
-  "version": "3.0.1",
+  "name": "@timebutt/ngx-daterangepicker-material",
+  "version": "4.0.1",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular",
@@ -24,9 +24,8 @@
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
-    "build": "bash ./tools/build-themes.sh && ng-packagr -p ng-package.json && npm run bundle-styles",
+    "build": "ng-packagr -p ng-package.json",
     "build-themes": "bash ./tools/build-themes.sh",
-    "bundle-styles": "scss-bundle -c scss-bundle.config.json",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
     "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics",
     "postbuild": "npm run build:schematics && npm run copy:schematics",
@@ -66,7 +65,6 @@
     "prettier": "^2.0.2",
     "raw-loader": "^4.0.2",
     "rxjs": "^7.5.7",
-    "scss-bundle": "^3.1.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
     "tslint": "~5.11.0",

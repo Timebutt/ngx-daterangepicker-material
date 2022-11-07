@@ -3,5 +3,6 @@
     "lib": {
         "entryFile": "src/daterangepicker/index.ts"
     },
-    "dest": "dist"
+    "dest": "dist",
+    "assets": ["./src/daterangepicker/daterangepicker-theme.scss"]
 }
