@@ -18,8 +18,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, takeUntil } from 'rxjs';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';

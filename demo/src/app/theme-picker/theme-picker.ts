@@ -7,8 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, Subscription } from 'rxjs';
 import { StyleManager } from '../style-manager';
 import { DocsSiteTheme, ThemeStorage } from './theme-storage/theme-storage';
 
