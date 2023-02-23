@@ -57,8 +57,8 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
             <mat-checkbox [(ngModel)]="options.customRangeDirection">customRangeDirection</mat-checkbox>
             <mat-checkbox [(ngModel)]="options.lockStartDate">lockStartDate</mat-checkbox>
             <br />
-            <div><strong>minDate:</strong> {{ minDate | date : 'dd/MM/yyyy' }}</div>
-            <div><strong>maxDate:</strong> {{ maxDate | date : 'dd/MM/yyyy' }}</div>
+            <div><strong>minDate:</strong> {{ minDate | date: 'dd/MM/yyyy' }}</div>
+            <div><strong>maxDate:</strong> {{ maxDate | date: 'dd/MM/yyyy' }}</div>
         </div>
         <br />
         <div>Locale</div>

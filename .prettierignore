@@ -18,6 +18,7 @@
 .firebase
 .gitlab
 .github
+.angular
 .storybook
 .scannerwork
 package.json
