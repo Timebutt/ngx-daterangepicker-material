@@ -1,10 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { map, Subscription } from 'rxjs';

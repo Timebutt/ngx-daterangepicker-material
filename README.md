@@ -16,10 +16,10 @@ Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
 ## Versions
 
-| Angular| ngx-daterangepicker-material|
-| ------|:------:| 
-| >=9.0.0 | v2.3.x and v3.x |
-| <9.0.0  | v2.2.x and below|
+| Angular | ngx-daterangepicker-material |
+| ------- | :--------------------------: |
+| >=9.0.0 |       v2.3.x and v3.x        |
+| <9.0.0  |       v2.2.x and below       |
 
 ---
 
@@ -214,9 +214,7 @@ It is possible to open datepicker from outside. You should create an input with 
     class="datepicker-calendar-icon"
 />
 
-<a class="ngx-daterangepicker-action" (click)="openDatepicker()">
-    Open
-</a>
+<a class="ngx-daterangepicker-action" (click)="openDatepicker()"> Open </a>
 ```
 
 ```javascript

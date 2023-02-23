@@ -2,7 +2,7 @@
     "compilerOptions": {
         "downlevelIteration": true,
         "importHelpers": true,
-        "target": "es2020",
+        "target": "ES2022",
         "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
@@ -16,7 +16,8 @@
         "outDir": "dist",
         "lib": ["es2018", "dom"],
         "baseUrl": "./",
-        "types": ["node"]
+        "types": ["node"],
+        "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,

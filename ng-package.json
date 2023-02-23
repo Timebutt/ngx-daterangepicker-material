@@ -4,5 +4,5 @@
         "entryFile": "src/daterangepicker/index.ts"
     },
     "dest": "dist",
-    "assets": ["./src/daterangepicker/daterangepicker-theme.scss"]
+    "assets": [{ "input": "./src/daterangepicker", "glob": "daterangepicker-theme.scss", "output": "./" }]
 }
