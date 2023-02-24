@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker';
 
 @Component({

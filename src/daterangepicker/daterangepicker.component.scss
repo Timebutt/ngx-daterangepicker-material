@@ -182,12 +182,12 @@ $md-drppicker-cell-border-size: 1px !default;
     }
 
     td {
-        &.start-date {
-            border-radius: 2em 0 0 2em;
-        }
-
         &.in-range {
             border-radius: 0;
+        }
+
+        &.start-date {
+            border-radius: 2em 0 0 2em;
         }
 
         &.end-date {

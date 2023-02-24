@@ -12,12 +12,10 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _moment from 'moment';
+import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-
-const moment = _moment;
 
 export enum SideEnum {
     left = 'left',
@@ -65,9 +63,9 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     sideEnum = SideEnum;
 
     @Input()
-    minDate: _moment.Moment = null;
+    minDate: moment.Moment = null;
     @Input()
-    maxDate: _moment.Moment = null;
+    maxDate: moment.Moment = null;
     @Input()
     autoApply = false;
     @Input()
@@ -141,15 +139,15 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     customRangeDirection = false;
 
     @Input()
-    isInvalidDate(date: _moment.Moment) {
+    isInvalidDate(date: moment.Moment) {
         return false;
     }
     @Input()
-    isCustomDate(date: _moment.Moment) {
+    isCustomDate(date: moment.Moment) {
         return false;
     }
     @Input()
-    isTooltipDate(date: _moment.Moment): string {
+    isTooltipDate(date: moment.Moment): string {
         return null;
     }
 
@@ -161,16 +159,16 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     // some state information
     isShown: Boolean = false;
     inline = true;
-    leftCalendar: { month: _moment.Moment; calendar?: _moment.Moment[][] } = { month: null };
-    rightCalendar: { month: _moment.Moment; calendar?: _moment.Moment[][] } = { month: null };
+    leftCalendar: { month: moment.Moment; calendar?: moment.Moment[][] } = { month: null };
+    rightCalendar: { month: moment.Moment; calendar?: moment.Moment[][] } = { month: null };
     showCalInRanges: Boolean = false;
     @Input() closeOnAutoApply = true;
 
-    @Output() chosenDate: EventEmitter<{ chosenLabel: string; startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output() rangeClicked: EventEmitter<{ label: string; dates: [_moment.Moment, _moment.Moment] }> = new EventEmitter();
-    @Output() datesUpdated: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
+    @Output() chosenDate: EventEmitter<{ chosenLabel: string; startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
+    @Output() rangeClicked: EventEmitter<{ label: string; dates: [moment.Moment, moment.Moment] }> = new EventEmitter();
+    @Output() datesUpdated: EventEmitter<{ startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
+    @Output() startDateChanged: EventEmitter<{ startDate: moment.Moment }> = new EventEmitter();
+    @Output() endDateChanged: EventEmitter<{ endDate: moment.Moment }> = new EventEmitter();
     @Output() closeDateRangePicker: EventEmitter<void> = new EventEmitter();
 
     @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
@@ -1204,7 +1202,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
      * @param date the date to add time
      * @param side left or right
      */
-    private _getDateWithTime(date, side: SideEnum): _moment.Moment {
+    private _getDateWithTime(date, side: SideEnum): moment.Moment {
         let hour = parseInt(this.timepickerVariables[side].selectedHour, 10);
         if (!this.timePicker24Hour) {
             const ampm = this.timepickerVariables[side].ampmModel;

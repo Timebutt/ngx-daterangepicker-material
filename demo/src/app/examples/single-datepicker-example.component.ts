@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { LocaleConfig } from '../../../../src/daterangepicker';
 
 @Component({
