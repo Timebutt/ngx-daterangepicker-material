@@ -6,7 +6,6 @@ import {
     Directive,
     ElementRef,
     EventEmitter,
-    forwardRef,
     Input,
     KeyValueDiffers,
     OnChanges,
@@ -15,13 +14,13 @@ import {
     Output,
     SimpleChanges,
     ViewContainerRef,
+    forwardRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
-import { LocaleService } from './locale.service';
 
 @Directive({
     selector: 'input[ngxDaterangepickerMd]',
@@ -112,9 +111,21 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     timePickerSeconds = false;
     @Input() closeOnAutoApply = true;
+    defaultLocale: LocaleConfig = {
+        direction: 'ltr',
+        separator: ' - ',
+        weekLabel: 'W',
+        applyLabel: 'Okay',
+        cancelLabel: 'Cancel',
+        clearLabel: 'Clear',
+        customRangeLabel: 'Custom range',
+        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        firstDay: 1,
+    };
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
-        this._locale = { ...this._localeService.config, ...value };
+        this._locale = { ...this.defaultLocale, ...value };
     }
     get locale(): any {
         return this._locale;
@@ -160,7 +171,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         public _changeDetectorRef: ChangeDetectorRef,
         private _el: ElementRef,
         private differs: KeyValueDiffers,
-        private _localeService: LocaleService,
         private elementRef: ElementRef,
         private overlay: Overlay
     ) {}
@@ -446,7 +456,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
      *  build the locale config
      */
     private _buildLocale() {
-        this.locale = { ...this._localeService.config, ...this.locale };
+        this.locale = { ...this.locale };
         if (!this.locale.format) {
             if (this.timePicker) {
                 this.locale.format = moment.localeData().longDateFormat('lll');

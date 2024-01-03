@@ -1,8 +1,18 @@
-@import '../../node_modules/@angular/material/theming';
+@use '@angular/material' as mat;
 
 @import './app/navbar/navbar-theme';
 @import './app/footer/footer-theme';
 @import '../../src/daterangepicker/daterangepicker-theme.scss';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.all-component-typographies(mat.define-typography-config());
+@include mat.core();
+@include mat.typography-hierarchy(
+    mat.define-typography-config($headline-1: mat.define-typography-level(42px, 42px, 100)),
+    '.custom-typography'
+);
 
 .mycustomdate {
     background-color: #ccc8c8 !important;
@@ -72,23 +82,22 @@ mat-toolbar {
     $warn: map-get($theme, warn);
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
-    $next-theme: mat-palette($mat-red);
 
     .docs-app-background {
-        background: mat-color($background, background);
+        background: white;
     }
 
     body {
-        color: mat-color($foreground, text);
+        color: black;
     }
 
     .docs-footer {
-        background: mat-color($primary);
-        color: mat-color($primary, default-contrast);
+        background: white;
+        color: black;
     }
 
     .is-next-version {
-        background: mat-color($next-theme, 900) !important;
+        background: red !important;
     }
 
     @include nav-bar-theme($theme);
@@ -97,9 +106,14 @@ mat-toolbar {
 }
 
 // Define the light theme.
-$primary: mat-palette($mat-indigo);
-$accent: mat-palette($mat-pink, A200, A100, A400);
-
-$theme: mat-light-theme($primary, $accent);
+// Define a light theme
+$theme: mat.define-light-theme(
+    (
+        color: (
+            primary: mat.define-palette(mat.$indigo-palette),
+            accent: mat.define-palette(mat.$pink-palette),
+        ),
+    )
+);
 
 @include material-docs-app-theme($theme);

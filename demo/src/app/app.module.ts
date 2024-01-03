@@ -72,10 +72,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
         MatInputModule,
         MatSelectModule,
         NavBarModule,
-        NgxDaterangepickerMd.forRoot({
-            applyLabel: 'Okay',
-            firstDay: 3,
-        }),
+        NgxDaterangepickerMd,
         RouterModule.forRoot(appRoutes),
     ],
     bootstrap: [AppComponent],
