@@ -38,7 +38,7 @@ import { LocaleConfig } from './daterangepicker.config';
             multi: true,
         },
     ],
-    standalone: false
+    standalone: false,
 })
 export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private _onChange = Function.prototype;
@@ -173,7 +173,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         private _el: ElementRef,
         private differs: KeyValueDiffers,
         private elementRef: ElementRef,
-        private overlay: Overlay
+        private overlay: Overlay,
     ) {}
 
     ngOnInit(): void {

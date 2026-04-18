@@ -18,7 +18,7 @@ import moment from 'moment';
         </ngx-daterangepicker-material>
         <div>Chosen date (after changes): {{ inlineDateTime | json }}</div>
     `,
-    standalone: false
+    standalone: false,
 })
 export class SimpleInlineTimepickerExampleComponent {
     inlineDateTime: { chosenLabel: string; startDate: moment.Moment; endDate: moment.Moment };

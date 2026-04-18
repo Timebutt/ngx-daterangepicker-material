@@ -5,7 +5,7 @@ const fullExample = require('!!raw-loader!../examples/full-example.component.ts'
 @Component({
     selector: 'full',
     templateUrl: './full.component.html',
-    standalone: false
+    standalone: false,
 })
 export class FullComponent {
     fullExample = fullExample;

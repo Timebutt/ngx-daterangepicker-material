@@ -36,7 +36,7 @@ export enum SideEnum {
             multi: true,
         },
     ],
-    standalone: false
+    standalone: false,
 })
 export class DaterangepickerComponent implements OnInit, OnDestroy {
     private _old: { start: any; end: any } = { start: null, end: null };
@@ -307,9 +307,9 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         let selected, minDate;
         const maxDate = this.maxDate;
         if (side === SideEnum.left) {
-            (selected = this.startDate.clone()), (minDate = this.minDate);
+            ((selected = this.startDate.clone()), (minDate = this.minDate));
         } else if (side === SideEnum.right && this.endDate) {
-            (selected = this.endDate.clone()), (minDate = this.startDate);
+            ((selected = this.endDate.clone()), (minDate = this.startDate));
         } else if (side === SideEnum.right && !this.endDate) {
             // don't have an end date, use the start date then put the selected time for the right side as the time
             selected = this._getDateWithTime(this.startDate, SideEnum.right);

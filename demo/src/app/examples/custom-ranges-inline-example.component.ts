@@ -25,7 +25,7 @@ import moment from 'moment';
             <div>Chosen date (after changes): {{ inlineDateTime | json }}</div>
         </form>
     `,
-    standalone: false
+    standalone: false,
 })
 export class CustomRangesInlineExampleComponent {
     showRangeLabelOnInput: boolean;

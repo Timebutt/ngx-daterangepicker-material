@@ -16,7 +16,7 @@ import { Component, Input } from '@angular/core';
         </div>
     `,
     styleUrls: ['./example.component.less'],
-    standalone: false
+    standalone: false,
 })
 export class ExampleComponent {
     @Input()

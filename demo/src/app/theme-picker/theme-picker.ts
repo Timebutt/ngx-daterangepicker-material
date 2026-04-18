@@ -17,7 +17,7 @@ import { DocsSiteTheme, ThemeStorage } from './theme-storage/theme-storage';
     styleUrls: ['theme-picker.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    standalone: false,
 })
 export class ThemePicker implements OnInit, OnDestroy {
     private _queryParamSubscription = Subscription.EMPTY;
@@ -62,7 +62,7 @@ export class ThemePicker implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private liveAnnouncer: LiveAnnouncer,
         iconRegistry: MatIconRegistry,
-        sanitizer: DomSanitizer
+        sanitizer: DomSanitizer,
     ) {
         iconRegistry.addSvgIcon('theme-example', sanitizer.bypassSecurityTrustResourceUrl('assets/img/theme-demo-icon.svg'));
         const themeName = this._themeStorage.getStoredThemeName();

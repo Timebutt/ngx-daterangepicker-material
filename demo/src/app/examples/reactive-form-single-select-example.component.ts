@@ -23,7 +23,7 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
             </div>
         </form>
     `,
-    standalone: false
+    standalone: false,
 })
 export class ReactiveFormSingleSelectExample {
     form = this.fb.group({

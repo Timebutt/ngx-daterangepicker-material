@@ -17,7 +17,7 @@ import moment from 'moment';
             />
         </mat-form-field>
     `,
-    standalone: false
+    standalone: false,
 })
 export class TimepickerExampleComponent {
     selected = {

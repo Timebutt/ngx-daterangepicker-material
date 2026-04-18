@@ -19,7 +19,7 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
             />
         </mat-form-field>
     `,
-    standalone: false
+    standalone: false,
 })
 export class SingleDatepickerExampleComponent {
     selected = moment();

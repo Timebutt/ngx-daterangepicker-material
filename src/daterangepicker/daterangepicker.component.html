@@ -8,390 +8,437 @@
         hidden: !isShown && !inline,
         inline: inline,
         double: !singleDatePicker && showCalInRanges,
-        'show-ranges': rangesArray.length
+        'show-ranges': rangesArray.length,
     }"
 >
     @if (rangesArray.length > 0) {
-    <div class="ranges">
-        <ul>
-            @for (range of rangesArray; track range) {
-            <li>
-                <button
-                    type="button"
-                    [disabled]="disableRange(range)"
-                    [ngClass]="{ active: range === chosenRange }"
-                    (click)="clickRange(range)"
-                >
-                    {{ range }}
+        <div class="ranges">
+            <ul>
+                @for (range of rangesArray; track range) {
+                    <li>
+                        <button
+                            type="button"
+                            [disabled]="disableRange(range)"
+                            [ngClass]="{ active: range === chosenRange }"
+                            (click)="clickRange(range)"
+                        >
+                            {{ range }}
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    @if (showCalInRanges) {
+        <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
+            <div class="calendar-table">
+                @if (calendarVariables) {
+                    <table class="table-condensed">
+                        <thead>
+                            <tr>
+                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                    <th></th>
+                                }
+                                @if (
+                                    !calendarVariables.left.minDate ||
+                                    (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&
+                                        (!this.linkedCalendars || true))
+                                ) {
+                                    <th>
+                                        <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.left)">
+                                            <mat-icon>keyboard_arrow_left</mat-icon>
+                                        </button>
+                                    </th>
+                                }
+                                @if (
+                                    !(
+                                        !calendarVariables.left.minDate ||
+                                        (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&
+                                            (!this.linkedCalendars || true))
+                                    )
+                                ) {
+                                    <th></th>
+                                }
+                                <th colspan="5" class="month drp-animate">
+                                    @if (showDropdowns && calendarVariables.left.dropdowns) {
+                                        <div class="dropdowns">
+                                            <mat-select [formControl]="fromMonthControl">
+                                                @for (m of calendarVariables.left.dropdowns.monthArrays; track m) {
+                                                    <mat-option
+                                                        [value]="m"
+                                                        [disabled]="
+                                                            (calendarVariables.left.dropdowns.inMinYear &&
+                                                                m < calendarVariables.left.minDate.month()) ||
+                                                            (calendarVariables.left.dropdowns.inMaxYear &&
+                                                                m > calendarVariables.left.maxDate.month())
+                                                        "
+                                                    >
+                                                        {{ locale.monthNames[m] }}
+                                                    </mat-option>
+                                                }
+                                            </mat-select>
+                                        </div>
+                                        <div class="dropdowns">
+                                            <mat-select [formControl]="fromYearControl">
+                                                @for (y of calendarVariables.left.dropdowns.yearArrays; track y) {
+                                                    <mat-option [value]="y">
+                                                        {{ y }}
+                                                    </mat-option>
+                                                }
+                                            </mat-select>
+                                        </div>
+                                    }
+                                    @if (!showDropdowns || !calendarVariables.left.dropdowns) {
+                                        {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
+                                        {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
+                                    }
+                                </th>
+                                @if (
+                                    (!calendarVariables.left.maxDate ||
+                                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&
+                                    (!linkedCalendars || singleDatePicker)
+                                ) {
+                                    <th>
+                                        <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.left)">
+                                            <mat-icon>keyboard_arrow_right</mat-icon>
+                                        </button>
+                                    </th>
+                                }
+                                @if (
+                                    !(
+                                        (!calendarVariables.left.maxDate ||
+                                            calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&
+                                        (!linkedCalendars || singleDatePicker)
+                                    )
+                                ) {
+                                    <th></th>
+                                }
+                            </tr>
+                            <tr class="week-days">
+                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                    <th class="week">
+                                        <span>{{ this.locale.weekLabel }}</span>
+                                    </th>
+                                }
+                                @for (dayofweek of locale.daysOfWeek; track dayofweek) {
+                                    <th>
+                                        <span>{{ dayofweek }}</span>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody class="drp-animate">
+                            @for (row of calendarVariables.left.calRows; track row) {
+                                <tr [class]="calendarVariables.left.classes[row].classList">
+                                    <!-- add week number -->
+                                    @if (showWeekNumbers) {
+                                        <td class="week">
+                                            <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>
+                                        </td>
+                                    }
+                                    @if (showISOWeekNumbers) {
+                                        <td class="week">
+                                            <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>
+                                        </td>
+                                    }
+                                    <!-- cal -->
+                                    @for (col of calendarVariables.left.calCols; track col) {
+                                        <td
+                                            [class]="calendarVariables.left.classes[row][col]"
+                                            (click)="clickDate($event, sideEnum.left, row, col)"
+                                            (mouseenter)="hoverDate($event, sideEnum.left, row, col)"
+                                        >
+                                            <span>{{ calendarVariables.left.calendar[row][col].date() }}</span>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            @if (timePicker) {
+                <div class="calendar-time">
+                    <div class="select">
+                        <mat-select
+                            class="hourselect"
+                            [disabled]="!startDate"
+                            [(ngModel)]="timepickerVariables.left.selectedHour"
+                            (ngModelChange)="timeChanged(sideEnum.left)"
+                        >
+                            @for (i of timepickerVariables.left.hours; track i) {
+                                <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledHours.indexOf(i) > -1">
+                                    {{ i }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </div>
+                    <div class="select">
+                        <mat-select
+                            class="minuteselect"
+                            [disabled]="!startDate"
+                            [(ngModel)]="timepickerVariables.left.selectedMinute"
+                            (ngModelChange)="timeChanged(sideEnum.left)"
+                        >
+                            @for (i of timepickerVariables.left.minutes; track i; let index = $index) {
+                                <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledMinutes.indexOf(i) > -1">
+                                    {{ timepickerVariables.left.minutesLabel[index] }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                    <div class="select">
+                        @if (timePickerSeconds) {
+                            <mat-select
+                                class="secondselect"
+                                [disabled]="!startDate"
+                                [(ngModel)]="timepickerVariables.left.selectedSecond"
+                                (ngModelChange)="timeChanged(sideEnum.left)"
+                            >
+                                @for (i of timepickerVariables.left.seconds; track i; let index = $index) {
+                                    <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledSeconds.indexOf(i) > -1">
+                                        {{ timepickerVariables.left.secondsLabel[index] }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        }
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                    <div class="select">
+                        @if (!timePicker24Hour) {
+                            <mat-select
+                                class="ampmselect"
+                                [(ngModel)]="timepickerVariables.left.ampmModel"
+                                (ngModelChange)="timeChanged(sideEnum.left)"
+                            >
+                                <mat-option value="AM" [disabled]="timepickerVariables.left.amDisabled">AM</mat-option>
+                                <mat-option value="PM" [disabled]="timepickerVariables.left.pmDisabled">PM</mat-option>
+                            </mat-select>
+                        }
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @if (showCalInRanges && !singleDatePicker) {
+        <div class="calendar right">
+            <div class="calendar-table">
+                @if (calendarVariables) {
+                    <table class="table-condensed">
+                        <thead>
+                            <tr>
+                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                    <th></th>
+                                }
+                                @if (
+                                    (!calendarVariables.right.minDate ||
+                                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&
+                                    !this.linkedCalendars
+                                ) {
+                                    <th>
+                                        <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.right)">
+                                            <mat-icon>keyboard_arrow_left</mat-icon>
+                                        </button>
+                                    </th>
+                                }
+                                @if (
+                                    !(
+                                        (!calendarVariables.right.minDate ||
+                                            calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&
+                                        !this.linkedCalendars
+                                    )
+                                ) {
+                                    <th></th>
+                                }
+                                <th colspan="5" class="month">
+                                    @if (showDropdowns && calendarVariables.right.dropdowns) {
+                                        <div class="dropdowns">
+                                            <mat-select [formControl]="toMonthControl">
+                                                @for (m of calendarVariables.right.dropdowns.monthArrays; track m) {
+                                                    <mat-option
+                                                        [disabled]="
+                                                            (calendarVariables.right.dropdowns.inMinYear &&
+                                                                m < calendarVariables.right.minDate.month()) ||
+                                                            (calendarVariables.right.dropdowns.inMaxYear &&
+                                                                m > calendarVariables.right.maxDate.month())
+                                                        "
+                                                        [value]="m"
+                                                    >
+                                                        {{ locale.monthNames[m] }}
+                                                    </mat-option>
+                                                }
+                                            </mat-select>
+                                        </div>
+                                        <div class="dropdowns">
+                                            <mat-select [formControl]="toYearControl">
+                                                @for (y of calendarVariables.right.dropdowns.yearArrays; track y) {
+                                                    <mat-option [value]="y">
+                                                        {{ y }}
+                                                    </mat-option>
+                                                }
+                                            </mat-select>
+                                        </div>
+                                    }
+                                    @if (!showDropdowns || !calendarVariables.right.dropdowns) {
+                                        {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
+                                        {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
+                                    }
+                                </th>
+                                @if (
+                                    !calendarVariables.right.maxDate ||
+                                    (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&
+                                        (!linkedCalendars || singleDatePicker || true))
+                                ) {
+                                    <th>
+                                        <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.right)">
+                                            <mat-icon>keyboard_arrow_right</mat-icon>
+                                        </button>
+                                    </th>
+                                }
+                                @if (
+                                    !(
+                                        !calendarVariables.right.maxDate ||
+                                        (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&
+                                            (!linkedCalendars || singleDatePicker || true))
+                                    )
+                                ) {
+                                    <th></th>
+                                }
+                            </tr>
+                            <tr class="week-days">
+                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                    <th class="week">
+                                        <span>{{ this.locale.weekLabel }}</span>
+                                    </th>
+                                }
+                                @for (dayofweek of locale.daysOfWeek; track dayofweek) {
+                                    <th>
+                                        <span>{{ dayofweek }}</span>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (row of calendarVariables.right.calRows; track row) {
+                                <tr [class]="calendarVariables.right.classes[row].classList">
+                                    @if (showWeekNumbers) {
+                                        <td class="week">
+                                            <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>
+                                        </td>
+                                    }
+                                    @if (showISOWeekNumbers) {
+                                        <td class="week">
+                                            <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>
+                                        </td>
+                                    }
+                                    @for (col of calendarVariables.right.calCols; track col) {
+                                        <td
+                                            [class]="calendarVariables.right.classes[row][col]"
+                                            (click)="clickDate($event, sideEnum.right, row, col)"
+                                            (mouseenter)="hoverDate($event, sideEnum.right, row, col)"
+                                        >
+                                            <span>{{ calendarVariables.right.calendar[row][col].date() }}</span>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            @if (timePicker) {
+                <div class="calendar-time">
+                    <div class="select">
+                        <mat-select
+                            class="hourselect"
+                            [disabled]="!startDate"
+                            [(ngModel)]="timepickerVariables.right.selectedHour"
+                            (ngModelChange)="timeChanged(sideEnum.right)"
+                        >
+                            @for (i of timepickerVariables.right.hours; track i) {
+                                <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledHours.indexOf(i) > -1">
+                                    {{ i }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                    <div class="select">
+                        <mat-select
+                            class="minuteselect"
+                            [disabled]="!startDate"
+                            [(ngModel)]="timepickerVariables.right.selectedMinute"
+                            (ngModelChange)="timeChanged(sideEnum.right)"
+                        >
+                            @for (i of timepickerVariables.right.minutes; track i; let index = $index) {
+                                <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledMinutes.indexOf(i) > -1">
+                                    {{ timepickerVariables.right.minutesLabel[index] }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                    <div class="select">
+                        @if (timePickerSeconds) {
+                            <mat-select
+                                class="secondselect"
+                                [disabled]="!startDate"
+                                [(ngModel)]="timepickerVariables.right.selectedSecond"
+                                (ngModelChange)="timeChanged(sideEnum.right)"
+                            >
+                                @for (i of timepickerVariables.right.seconds; track i; let index = $index) {
+                                    <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledSeconds.indexOf(i) > -1">
+                                        {{ timepickerVariables.right.secondsLabel[index] }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        }
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                    <div class="select">
+                        @if (!timePicker24Hour) {
+                            <mat-select
+                                class="ampmselect"
+                                [(ngModel)]="timepickerVariables.right.ampmModel"
+                                (ngModelChange)="timeChanged(sideEnum.right)"
+                            >
+                                <mat-option value="AM" [disabled]="timepickerVariables.right.amDisabled">AM</mat-option>
+                                <mat-option value="PM" [disabled]="timepickerVariables.right.pmDisabled">PM</mat-option>
+                            </mat-select>
+                        }
+                        <span class="select-highlight"></span>
+                        <span class="select-bar"></span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @if (!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))) {
+        <div class="buttons">
+            <div class="buttons_input">
+                @if (showClearButton) {
+                    <button mat-raised-button type="button" [title]="locale.clearLabel" (click)="clear()">
+                        <span class="clear-button">
+                            {{ locale.clearLabel }}
+                            <mat-icon [inline]="true" class="clear-icon">delete</mat-icon>
+                        </span>
+                    </button>
+                }
+                @if (showCancel) {
+                    <button mat-raised-button (click)="clickCancel()">{{ locale.cancelLabel }}</button>
+                }
+                <button [disabled]="applyBtn.disabled" mat-raised-button color="primary" (click)="clickApply($event)">
+                    {{ locale.applyLabel }}
                 </button>
-            </li>
-            }
-        </ul>
-    </div>
-    } @if (showCalInRanges) {
-    <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
-        <div class="calendar-table">
-            @if (calendarVariables) {
-            <table class="table-condensed">
-                <thead>
-                    <tr>
-                        @if (showWeekNumbers || showISOWeekNumbers) {
-                        <th></th>
-                        } @if ( !calendarVariables.left.minDate ||
-                        (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars ||
-                        true)) ) {
-                        <th>
-                            <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.left)">
-                                <mat-icon>keyboard_arrow_left</mat-icon>
-                            </button>
-                        </th>
-                        } @if ( !( !calendarVariables.left.minDate ||
-                        (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars ||
-                        true)) ) ) {
-                        <th></th>
-                        }
-                        <th colspan="5" class="month drp-animate">
-                            @if (showDropdowns && calendarVariables.left.dropdowns) {
-                            <div class="dropdowns">
-                                <mat-select [formControl]="fromMonthControl">
-                                    @for (m of calendarVariables.left.dropdowns.monthArrays; track m) {
-                                    <mat-option
-                                        [value]="m"
-                                        [disabled]="
-                                            (calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) ||
-                                            (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())
-                                        "
-                                    >
-                                        {{ locale.monthNames[m] }}
-                                    </mat-option>
-                                    }
-                                </mat-select>
-                            </div>
-                            <div class="dropdowns">
-                                <mat-select [formControl]="fromYearControl">
-                                    @for (y of calendarVariables.left.dropdowns.yearArrays; track y) {
-                                    <mat-option [value]="y">
-                                        {{ y }}
-                                    </mat-option>
-                                    }
-                                </mat-select>
-                            </div>
-                            } @if (!showDropdowns || !calendarVariables.left.dropdowns) {
-                            {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
-                            {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
-                            }
-                        </th>
-                        @if ( (!calendarVariables.left.maxDate ||
-                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
-                        singleDatePicker) ) {
-                        <th>
-                            <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.left)">
-                                <mat-icon>keyboard_arrow_right</mat-icon>
-                            </button>
-                        </th>
-                        } @if ( !( (!calendarVariables.left.maxDate ||
-                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
-                        singleDatePicker) ) ) {
-                        <th></th>
-                        }
-                    </tr>
-                    <tr class="week-days">
-                        @if (showWeekNumbers || showISOWeekNumbers) {
-                        <th class="week">
-                            <span>{{ this.locale.weekLabel }}</span>
-                        </th>
-                        } @for (dayofweek of locale.daysOfWeek; track dayofweek) {
-                        <th>
-                            <span>{{ dayofweek }}</span>
-                        </th>
-                        }
-                    </tr>
-                </thead>
-                <tbody class="drp-animate">
-                    @for (row of calendarVariables.left.calRows; track row) {
-                    <tr [class]="calendarVariables.left.classes[row].classList">
-                        <!-- add week number -->
-                        @if (showWeekNumbers) {
-                        <td class="week">
-                            <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>
-                        </td>
-                        } @if (showISOWeekNumbers) {
-                        <td class="week">
-                            <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>
-                        </td>
-                        }
-                        <!-- cal -->
-                        @for (col of calendarVariables.left.calCols; track col) {
-                        <td
-                            [class]="calendarVariables.left.classes[row][col]"
-                            (click)="clickDate($event, sideEnum.left, row, col)"
-                            (mouseenter)="hoverDate($event, sideEnum.left, row, col)"
-                        >
-                            <span>{{ calendarVariables.left.calendar[row][col].date() }}</span>
-                        </td>
-                        }
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            }
-        </div>
-        @if (timePicker) {
-        <div class="calendar-time">
-            <div class="select">
-                <mat-select
-                    class="hourselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.left.selectedHour"
-                    (ngModelChange)="timeChanged(sideEnum.left)"
-                >
-                    @for (i of timepickerVariables.left.hours; track i) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledHours.indexOf(i) > -1">
-                        {{ i }}
-                    </mat-option>
-                    }
-                </mat-select>
-            </div>
-            <div class="select">
-                <mat-select
-                    class="minuteselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.left.selectedMinute"
-                    (ngModelChange)="timeChanged(sideEnum.left)"
-                >
-                    @for (i of timepickerVariables.left.minutes; track i; let index = $index) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledMinutes.indexOf(i) > -1">
-                        {{ timepickerVariables.left.minutesLabel[index] }}
-                    </mat-option>
-                    }
-                </mat-select>
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-            <div class="select">
-                @if (timePickerSeconds) {
-                <mat-select
-                    class="secondselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.left.selectedSecond"
-                    (ngModelChange)="timeChanged(sideEnum.left)"
-                >
-                    @for (i of timepickerVariables.left.seconds; track i; let index = $index) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.left.disabledSeconds.indexOf(i) > -1">
-                        {{ timepickerVariables.left.secondsLabel[index] }}
-                    </mat-option>
-                    }
-                </mat-select>
-                }
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-            <div class="select">
-                @if (!timePicker24Hour) {
-                <mat-select
-                    class="ampmselect"
-                    [(ngModel)]="timepickerVariables.left.ampmModel"
-                    (ngModelChange)="timeChanged(sideEnum.left)"
-                >
-                    <mat-option value="AM" [disabled]="timepickerVariables.left.amDisabled">AM</mat-option>
-                    <mat-option value="PM" [disabled]="timepickerVariables.left.pmDisabled">PM</mat-option>
-                </mat-select>
-                }
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
             </div>
         </div>
-        }
-    </div>
-    } @if (showCalInRanges && !singleDatePicker) {
-    <div class="calendar right">
-        <div class="calendar-table">
-            @if (calendarVariables) {
-            <table class="table-condensed">
-                <thead>
-                    <tr>
-                        @if (showWeekNumbers || showISOWeekNumbers) {
-                        <th></th>
-                        } @if ( (!calendarVariables.right.minDate ||
-                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) {
-                        <th>
-                            <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.right)">
-                                <mat-icon>keyboard_arrow_left</mat-icon>
-                            </button>
-                        </th>
-                        } @if ( !( (!calendarVariables.right.minDate ||
-                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) ) {
-                        <th></th>
-                        }
-                        <th colspan="5" class="month">
-                            @if (showDropdowns && calendarVariables.right.dropdowns) {
-                            <div class="dropdowns">
-                                <mat-select [formControl]="toMonthControl">
-                                    @for (m of calendarVariables.right.dropdowns.monthArrays; track m) {
-                                    <mat-option
-                                        [disabled]="
-                                            (calendarVariables.right.dropdowns.inMinYear && m < calendarVariables.right.minDate.month()) ||
-                                            (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())
-                                        "
-                                        [value]="m"
-                                    >
-                                        {{ locale.monthNames[m] }}
-                                    </mat-option>
-                                    }
-                                </mat-select>
-                            </div>
-                            <div class="dropdowns">
-                                <mat-select [formControl]="toYearControl">
-                                    @for (y of calendarVariables.right.dropdowns.yearArrays; track y) {
-                                    <mat-option [value]="y">
-                                        {{ y }}
-                                    </mat-option>
-                                    }
-                                </mat-select>
-                            </div>
-                            } @if (!showDropdowns || !calendarVariables.right.dropdowns) {
-                            {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
-                            {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
-                            }
-                        </th>
-                        @if ( !calendarVariables.right.maxDate ||
-                        (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars ||
-                        singleDatePicker || true)) ) {
-                        <th>
-                            <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.right)">
-                                <mat-icon>keyboard_arrow_right</mat-icon>
-                            </button>
-                        </th>
-                        } @if ( !( !calendarVariables.right.maxDate ||
-                        (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars ||
-                        singleDatePicker || true)) ) ) {
-                        <th></th>
-                        }
-                    </tr>
-                    <tr class="week-days">
-                        @if (showWeekNumbers || showISOWeekNumbers) {
-                        <th class="week">
-                            <span>{{ this.locale.weekLabel }}</span>
-                        </th>
-                        } @for (dayofweek of locale.daysOfWeek; track dayofweek) {
-                        <th>
-                            <span>{{ dayofweek }}</span>
-                        </th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (row of calendarVariables.right.calRows; track row) {
-                    <tr [class]="calendarVariables.right.classes[row].classList">
-                        @if (showWeekNumbers) {
-                        <td class="week">
-                            <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>
-                        </td>
-                        } @if (showISOWeekNumbers) {
-                        <td class="week">
-                            <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>
-                        </td>
-                        } @for (col of calendarVariables.right.calCols; track col) {
-                        <td
-                            [class]="calendarVariables.right.classes[row][col]"
-                            (click)="clickDate($event, sideEnum.right, row, col)"
-                            (mouseenter)="hoverDate($event, sideEnum.right, row, col)"
-                        >
-                            <span>{{ calendarVariables.right.calendar[row][col].date() }}</span>
-                        </td>
-                        }
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            }
-        </div>
-        @if (timePicker) {
-        <div class="calendar-time">
-            <div class="select">
-                <mat-select
-                    class="hourselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.right.selectedHour"
-                    (ngModelChange)="timeChanged(sideEnum.right)"
-                >
-                    @for (i of timepickerVariables.right.hours; track i) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledHours.indexOf(i) > -1">
-                        {{ i }}
-                    </mat-option>
-                    }
-                </mat-select>
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-            <div class="select">
-                <mat-select
-                    class="minuteselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.right.selectedMinute"
-                    (ngModelChange)="timeChanged(sideEnum.right)"
-                >
-                    @for (i of timepickerVariables.right.minutes; track i; let index = $index) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledMinutes.indexOf(i) > -1">
-                        {{ timepickerVariables.right.minutesLabel[index] }}
-                    </mat-option>
-                    }
-                </mat-select>
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-            <div class="select">
-                @if (timePickerSeconds) {
-                <mat-select
-                    class="secondselect"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timepickerVariables.right.selectedSecond"
-                    (ngModelChange)="timeChanged(sideEnum.right)"
-                >
-                    @for (i of timepickerVariables.right.seconds; track i; let index = $index) {
-                    <mat-option [value]="i" [disabled]="timepickerVariables.right.disabledSeconds.indexOf(i) > -1">
-                        {{ timepickerVariables.right.secondsLabel[index] }}
-                    </mat-option>
-                    }
-                </mat-select>
-                }
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-            <div class="select">
-                @if (!timePicker24Hour) {
-                <mat-select
-                    class="ampmselect"
-                    [(ngModel)]="timepickerVariables.right.ampmModel"
-                    (ngModelChange)="timeChanged(sideEnum.right)"
-                >
-                    <mat-option value="AM" [disabled]="timepickerVariables.right.amDisabled">AM</mat-option>
-                    <mat-option value="PM" [disabled]="timepickerVariables.right.pmDisabled">PM</mat-option>
-                </mat-select>
-                }
-                <span class="select-highlight"></span>
-                <span class="select-bar"></span>
-            </div>
-        </div>
-        }
-    </div>
-    } @if (!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))) {
-    <div class="buttons">
-        <div class="buttons_input">
-            @if (showClearButton) {
-            <button mat-raised-button type="button" [title]="locale.clearLabel" (click)="clear()">
-                <span class="clear-button">
-                    {{ locale.clearLabel }}
-                    <mat-icon [inline]="true" class="clear-icon">delete</mat-icon>
-                </span>
-            </button>
-            } @if (showCancel) {
-            <button mat-raised-button (click)="clickCancel()">{{ locale.cancelLabel }}</button>
-            }
-            <button [disabled]="applyBtn.disabled" mat-raised-button color="primary" (click)="clickApply($event)">
-                {{ locale.applyLabel }}
-            </button>
-        </div>
-    </div>
     }
 </div>

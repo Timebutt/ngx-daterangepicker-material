@@ -23,7 +23,7 @@
             "defaultCategory": "error"
         },
         "strictInjectionParameters": true,
-        
+
         "strictTemplates": true
     },
     "include": ["src/**/*"],

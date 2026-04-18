@@ -7,7 +7,7 @@ const customRangesInlineExample = require('!!raw-loader!../examples/custom-range
     selector: 'custom-ranges',
     templateUrl: './custom-ranges.component.html',
     styleUrls: ['./custom-ranges.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class CustomRangesComponent {
     customRangesExample = customRangesExample;

@@ -48,7 +48,9 @@ $md-drppicker-cell-border-size: 1px !default;
     margin-top: -10px;
     overflow: hidden;
     font-size: 14px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0 2px 4px 0 rgba(0, 0, 0, 0.16),
+        0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
     &.double {
         width: $md-drppicker-width-double;
@@ -430,7 +432,9 @@ $md-drppicker-cell-border-size: 1px !default;
 
     .drp-animate {
         transform: translate(0);
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
 
         &.drp-picker-site-this {
             transition-timing-function: linear;

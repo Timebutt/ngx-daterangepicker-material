@@ -22,7 +22,7 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
         <div>
             <button mat-raised-button color="primary" (click)="open()">Open from a button</button>
             @if (selected && selected.startDate) {
-            <button mat-raised-button (click)="clear($event)">Clear</button>
+                <button mat-raised-button (click)="clear($event)">Clear</button>
             }
         </div>
     `,
