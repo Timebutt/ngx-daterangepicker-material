@@ -5,6 +5,7 @@ const timepickerExample = require('!!raw-loader!../examples/timepicker-example.c
 @Component({
     selector: 'timepicker',
     templateUrl: './timepicker.component.html',
+    standalone: false
 })
 export class TimepickerComponent {
     timepickerExample = timepickerExample;

@@ -12,6 +12,7 @@ import { ThemeStorage } from '../theme-picker/theme-storage/theme-storage';
     selector: 'app-navbar',
     templateUrl: './navbar.html',
     styleUrls: ['./navbar.scss'],
+    standalone: false
 })
 export class NavBar {}
 

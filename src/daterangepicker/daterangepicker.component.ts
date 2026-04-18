@@ -36,6 +36,7 @@ export enum SideEnum {
             multi: true,
         },
     ],
+    standalone: false
 })
 export class DaterangepickerComponent implements OnInit, OnDestroy {
     private _old: { start: any; end: any } = { start: null, end: null };

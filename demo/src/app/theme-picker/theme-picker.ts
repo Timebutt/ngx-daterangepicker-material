@@ -17,6 +17,7 @@ import { DocsSiteTheme, ThemeStorage } from './theme-storage/theme-storage';
     styleUrls: ['theme-picker.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ThemePicker implements OnInit, OnDestroy {
     private _queryParamSubscription = Subscription.EMPTY;

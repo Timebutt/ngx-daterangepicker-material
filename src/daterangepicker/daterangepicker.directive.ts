@@ -38,6 +38,7 @@ import { LocaleConfig } from './daterangepicker.config';
             multi: true,
         },
     ],
+    standalone: false
 })
 export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private _onChange = Function.prototype;

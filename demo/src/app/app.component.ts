@@ -4,5 +4,6 @@ import { Component, ViewChild } from '@angular/core';
     selector: 'ngx-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {}

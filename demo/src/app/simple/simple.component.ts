@@ -8,6 +8,7 @@ const simpleInlineTimepickerExample = require('!!raw-loader!../examples/simple-i
     selector: 'simple',
     templateUrl: './simple.component.html',
     styleUrls: ['./simple.component.scss'],
+    standalone: false
 })
 export class SimpleComponent {
     simpleExample = simpleExample;

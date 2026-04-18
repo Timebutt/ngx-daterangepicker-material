@@ -24,6 +24,7 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
             <button *ngIf="selected && selected.startDate" mat-raised-button (click)="clear($event)">Clear</button>
         </div>
     `,
+    standalone: false
 })
 export class SimpleExampleComponent {
     @ViewChild(DaterangepickerDirective, { static: true })

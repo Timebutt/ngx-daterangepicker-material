@@ -7,6 +7,7 @@ const reactiveFormSingleSelectExample = require('!!raw-loader!../examples/reacti
     selector: 'reactive-form',
     templateUrl: './reactive-form.component.html',
     styleUrls: ['./reactive-form.component.scss'],
+    standalone: false
 })
 export class ReactiveFormComponent {
     reactiveFormMultiSelectExample = reactiveFormMultiSelectExample;

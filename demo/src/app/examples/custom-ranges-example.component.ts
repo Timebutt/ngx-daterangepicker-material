@@ -39,6 +39,7 @@ import moment from 'moment';
             </div>
         </form>
     `,
+    standalone: false
 })
 export class CustomRangesExampleComponent {
     selected: any;

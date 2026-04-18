@@ -89,6 +89,7 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
         </div>
     `,
     styleUrls: ['full-example.component.scss'],
+    standalone: false
 })
 export class FullExampleComponent {
     @ViewChild(DaterangepickerDirective, { static: true })

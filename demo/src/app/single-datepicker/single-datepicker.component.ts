@@ -6,6 +6,7 @@ const singleDatepickerExample = require('!!raw-loader!../examples/single-datepic
     selector: 'single-datepicker',
     templateUrl: './single-datepicker.component.html',
     styleUrls: ['./single-datepicker.component.scss'],
+    standalone: false
 })
 export class SingleDatepickerComponent {
     singleDatepickerExample = singleDatepickerExample;
