@@ -21,10 +21,12 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
         </mat-form-field>
         <div>
             <button mat-raised-button color="primary" (click)="open()">Open from a button</button>
-            <button *ngIf="selected && selected.startDate" mat-raised-button (click)="clear($event)">Clear</button>
+            @if (selected && selected.startDate) {
+            <button mat-raised-button (click)="clear($event)">Clear</button>
+            }
         </div>
     `,
-    standalone: false
+    standalone: false,
 })
 export class SimpleExampleComponent {
     @ViewChild(DaterangepickerDirective, { static: true })
