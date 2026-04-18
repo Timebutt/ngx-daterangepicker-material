@@ -56,18 +56,18 @@
     "@angular/router": "21.2.9",
     "@types/node": "^12.12.34",
     "angular-cli-ghpages": "^0.6.2",
-    "core-js": "^2.5.4",
+    "core-js": "^3.39.0",
     "cpr": "^3.0.1",
     "moment": "^2.24.0",
     "ng-packagr": "^21.2.3",
-    "ngx-highlightjs": "^8.0.0",
-    "prettier": "^2.8.4",
+    "ngx-highlightjs": "^14.0.0",
+    "prettier": "^3.8.3",
     "raw-loader": "^4.0.2",
     "rxjs": "^7.8.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
     "tslint": "~5.11.0",
-    "typescript": "~5.9.3",
-    "zone.js": "~0.15.1"
+    "typescript": "^6.0.3",
+    "zone.js": "~0.16.1"
   }
 }

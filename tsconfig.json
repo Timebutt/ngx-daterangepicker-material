@@ -15,15 +15,15 @@
         "outDir": "dist",
         "baseUrl": "./",
         "types": ["node"],
+        "strict": true,
         "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
-        "fullTemplateTypeCheck": true,
-        "skipTemplateCodegen": true,
-        "skipMetadataEmit": false,
-        "strictMetadataEmit": true,
-        "annotationsAs": "decorators",
+        "extendedDiagnostics": {
+            "defaultCategory": "error"
+        },
         "strictInjectionParameters": true,
+        
         "strictTemplates": true
     },
     "include": ["src/**/*"],
