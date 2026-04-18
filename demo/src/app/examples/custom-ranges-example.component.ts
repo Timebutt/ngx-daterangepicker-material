@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import moment from 'moment';
 
@@ -42,6 +42,8 @@ import moment from 'moment';
     standalone: false,
 })
 export class CustomRangesExampleComponent {
+    private formBuilder = inject(UntypedFormBuilder);
+
     selected: any;
     invalidDates: moment.Moment[] = [];
     tooltips = [
@@ -66,8 +68,6 @@ export class CustomRangesExampleComponent {
         keepCalendarOpeningWithRange: true,
         showRangeLabelOnInput: true,
     });
-
-    constructor(private formBuilder: UntypedFormBuilder) {}
 
     isInvalidDate = (m: moment.Moment) => {
         return this.invalidDates.some((d) => d.isSame(m, 'day'));

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import moment from 'moment';
 
@@ -21,13 +21,15 @@ import moment from 'moment';
                 [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
                 [locale]="{ applyLabel: 'Done', firstDay: 1 }"
                 (datesUpdated)="chosenDateTime($event)"
-            ></ngx-daterangepicker-material>
+            />
             <div>Chosen date (after changes): {{ inlineDateTime | json }}</div>
         </form>
     `,
     standalone: false,
 })
 export class CustomRangesInlineExampleComponent {
+    private formBuilder = inject(FormBuilder);
+
     showRangeLabelOnInput: boolean;
     invalidDates: moment.Moment[] = [];
     tooltips = [
@@ -53,8 +55,6 @@ export class CustomRangesInlineExampleComponent {
         keepCalendarOpeningWithRange: true,
         showRangeLabelOnInput: true,
     });
-
-    constructor(private formBuilder: FormBuilder) {}
 
     isInvalidDate = (m: moment.Moment) => {
         return this.invalidDates.some((d) => d.isSame(m, 'day'));

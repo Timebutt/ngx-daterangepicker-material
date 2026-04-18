@@ -1,16 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
     selector: 'example',
     template: `
         <div>
-            <mat-toolbar color="primary">{{ title }}</mat-toolbar>
+            <mat-toolbar color="primary">{{ title() }}</mat-toolbar>
 
             <div class="content">
-                <ng-content></ng-content>
+                <ng-content />
 
                 <pre>
-                    <code [highlight]="code"></code>
+                    <code [highlight]="code()"></code>
                 </pre>
             </div>
         </div>
@@ -19,9 +19,7 @@ import { Component, Input } from '@angular/core';
     standalone: false,
 })
 export class ExampleComponent {
-    @Input()
-    title: string;
+    readonly title = input<string>(undefined);
 
-    @Input()
-    code: string;
+    readonly code = input<string>(undefined);
 }

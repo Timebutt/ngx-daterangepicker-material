@@ -7,7 +7,7 @@
         shown: isShown || inline,
         hidden: !isShown && !inline,
         inline: inline,
-        double: !singleDatePicker && showCalInRanges,
+        double: !singleDatePicker() && showCalInRanges,
         'show-ranges': rangesArray.length,
     }"
 >
@@ -30,19 +30,19 @@
         </div>
     }
     @if (showCalInRanges) {
-        <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
+        <div class="calendar" [ngClass]="{ right: singleDatePicker(), left: !singleDatePicker() }">
             <div class="calendar-table">
                 @if (calendarVariables) {
                     <table class="table-condensed">
                         <thead>
                             <tr>
-                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                @if (showWeekNumbers() || showISOWeekNumbers()) {
                                     <th></th>
                                 }
                                 @if (
                                     !calendarVariables.left.minDate ||
                                     (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&
-                                        (!this.linkedCalendars || true))
+                                        (!this.linkedCalendars() || true))
                                 ) {
                                     <th>
                                         <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.left)">
@@ -54,13 +54,13 @@
                                     !(
                                         !calendarVariables.left.minDate ||
                                         (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) &&
-                                            (!this.linkedCalendars || true))
+                                            (!this.linkedCalendars() || true))
                                     )
                                 ) {
                                     <th></th>
                                 }
                                 <th colspan="5" class="month drp-animate">
-                                    @if (showDropdowns && calendarVariables.left.dropdowns) {
+                                    @if (showDropdowns() && calendarVariables.left.dropdowns) {
                                         <div class="dropdowns">
                                             <mat-select [formControl]="fromMonthControl">
                                                 @for (m of calendarVariables.left.dropdowns.monthArrays; track m) {
@@ -88,7 +88,7 @@
                                             </mat-select>
                                         </div>
                                     }
-                                    @if (!showDropdowns || !calendarVariables.left.dropdowns) {
+                                    @if (!showDropdowns() || !calendarVariables.left.dropdowns) {
                                         {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                                         {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
                                     }
@@ -96,7 +96,7 @@
                                 @if (
                                     (!calendarVariables.left.maxDate ||
                                         calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&
-                                    (!linkedCalendars || singleDatePicker)
+                                    (!linkedCalendars() || singleDatePicker())
                                 ) {
                                     <th>
                                         <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.left)">
@@ -108,14 +108,14 @@
                                     !(
                                         (!calendarVariables.left.maxDate ||
                                             calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) &&
-                                        (!linkedCalendars || singleDatePicker)
+                                        (!linkedCalendars() || singleDatePicker())
                                     )
                                 ) {
                                     <th></th>
                                 }
                             </tr>
                             <tr class="week-days">
-                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                @if (showWeekNumbers() || showISOWeekNumbers()) {
                                     <th class="week">
                                         <span>{{ this.locale.weekLabel }}</span>
                                     </th>
@@ -131,12 +131,12 @@
                             @for (row of calendarVariables.left.calRows; track row) {
                                 <tr [class]="calendarVariables.left.classes[row].classList">
                                     <!-- add week number -->
-                                    @if (showWeekNumbers) {
+                                    @if (showWeekNumbers()) {
                                         <td class="week">
                                             <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>
                                         </td>
                                     }
-                                    @if (showISOWeekNumbers) {
+                                    @if (showISOWeekNumbers()) {
                                         <td class="week">
                                             <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>
                                         </td>
@@ -157,12 +157,12 @@
                     </table>
                 }
             </div>
-            @if (timePicker) {
+            @if (timePicker()) {
                 <div class="calendar-time">
                     <div class="select">
                         <mat-select
                             class="hourselect"
-                            [disabled]="!startDate"
+                            [disabled]="!startDate()"
                             [(ngModel)]="timepickerVariables.left.selectedHour"
                             (ngModelChange)="timeChanged(sideEnum.left)"
                         >
@@ -176,7 +176,7 @@
                     <div class="select">
                         <mat-select
                             class="minuteselect"
-                            [disabled]="!startDate"
+                            [disabled]="!startDate()"
                             [(ngModel)]="timepickerVariables.left.selectedMinute"
                             (ngModelChange)="timeChanged(sideEnum.left)"
                         >
@@ -190,10 +190,10 @@
                         <span class="select-bar"></span>
                     </div>
                     <div class="select">
-                        @if (timePickerSeconds) {
+                        @if (timePickerSeconds()) {
                             <mat-select
                                 class="secondselect"
-                                [disabled]="!startDate"
+                                [disabled]="!startDate()"
                                 [(ngModel)]="timepickerVariables.left.selectedSecond"
                                 (ngModelChange)="timeChanged(sideEnum.left)"
                             >
@@ -208,7 +208,7 @@
                         <span class="select-bar"></span>
                     </div>
                     <div class="select">
-                        @if (!timePicker24Hour) {
+                        @if (!timePicker24Hour()) {
                             <mat-select
                                 class="ampmselect"
                                 [(ngModel)]="timepickerVariables.left.ampmModel"
@@ -225,20 +225,20 @@
             }
         </div>
     }
-    @if (showCalInRanges && !singleDatePicker) {
+    @if (showCalInRanges && !singleDatePicker()) {
         <div class="calendar right">
             <div class="calendar-table">
                 @if (calendarVariables) {
                     <table class="table-condensed">
                         <thead>
                             <tr>
-                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                @if (showWeekNumbers() || showISOWeekNumbers()) {
                                     <th></th>
                                 }
                                 @if (
                                     (!calendarVariables.right.minDate ||
                                         calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&
-                                    !this.linkedCalendars
+                                    !this.linkedCalendars()
                                 ) {
                                     <th>
                                         <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.right)">
@@ -250,13 +250,13 @@
                                     !(
                                         (!calendarVariables.right.minDate ||
                                             calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) &&
-                                        !this.linkedCalendars
+                                        !this.linkedCalendars()
                                     )
                                 ) {
                                     <th></th>
                                 }
                                 <th colspan="5" class="month">
-                                    @if (showDropdowns && calendarVariables.right.dropdowns) {
+                                    @if (showDropdowns() && calendarVariables.right.dropdowns) {
                                         <div class="dropdowns">
                                             <mat-select [formControl]="toMonthControl">
                                                 @for (m of calendarVariables.right.dropdowns.monthArrays; track m) {
@@ -284,7 +284,7 @@
                                             </mat-select>
                                         </div>
                                     }
-                                    @if (!showDropdowns || !calendarVariables.right.dropdowns) {
+                                    @if (!showDropdowns() || !calendarVariables.right.dropdowns) {
                                         {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                                         {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
                                     }
@@ -292,7 +292,7 @@
                                 @if (
                                     !calendarVariables.right.maxDate ||
                                     (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&
-                                        (!linkedCalendars || singleDatePicker || true))
+                                        (!linkedCalendars() || singleDatePicker() || true))
                                 ) {
                                     <th>
                                         <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.right)">
@@ -304,14 +304,14 @@
                                     !(
                                         !calendarVariables.right.maxDate ||
                                         (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) &&
-                                            (!linkedCalendars || singleDatePicker || true))
+                                            (!linkedCalendars() || singleDatePicker() || true))
                                     )
                                 ) {
                                     <th></th>
                                 }
                             </tr>
                             <tr class="week-days">
-                                @if (showWeekNumbers || showISOWeekNumbers) {
+                                @if (showWeekNumbers() || showISOWeekNumbers()) {
                                     <th class="week">
                                         <span>{{ this.locale.weekLabel }}</span>
                                     </th>
@@ -326,12 +326,12 @@
                         <tbody>
                             @for (row of calendarVariables.right.calRows; track row) {
                                 <tr [class]="calendarVariables.right.classes[row].classList">
-                                    @if (showWeekNumbers) {
+                                    @if (showWeekNumbers()) {
                                         <td class="week">
                                             <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>
                                         </td>
                                     }
-                                    @if (showISOWeekNumbers) {
+                                    @if (showISOWeekNumbers()) {
                                         <td class="week">
                                             <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>
                                         </td>
@@ -351,12 +351,12 @@
                     </table>
                 }
             </div>
-            @if (timePicker) {
+            @if (timePicker()) {
                 <div class="calendar-time">
                     <div class="select">
                         <mat-select
                             class="hourselect"
-                            [disabled]="!startDate"
+                            [disabled]="!startDate()"
                             [(ngModel)]="timepickerVariables.right.selectedHour"
                             (ngModelChange)="timeChanged(sideEnum.right)"
                         >
@@ -372,7 +372,7 @@
                     <div class="select">
                         <mat-select
                             class="minuteselect"
-                            [disabled]="!startDate"
+                            [disabled]="!startDate()"
                             [(ngModel)]="timepickerVariables.right.selectedMinute"
                             (ngModelChange)="timeChanged(sideEnum.right)"
                         >
@@ -386,10 +386,10 @@
                         <span class="select-bar"></span>
                     </div>
                     <div class="select">
-                        @if (timePickerSeconds) {
+                        @if (timePickerSeconds()) {
                             <mat-select
                                 class="secondselect"
-                                [disabled]="!startDate"
+                                [disabled]="!startDate()"
                                 [(ngModel)]="timepickerVariables.right.selectedSecond"
                                 (ngModelChange)="timeChanged(sideEnum.right)"
                             >
@@ -404,7 +404,7 @@
                         <span class="select-bar"></span>
                     </div>
                     <div class="select">
-                        @if (!timePicker24Hour) {
+                        @if (!timePicker24Hour()) {
                             <mat-select
                                 class="ampmselect"
                                 [(ngModel)]="timepickerVariables.right.ampmModel"
@@ -421,10 +421,10 @@
             }
         </div>
     }
-    @if (!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))) {
+    @if (!autoApply() && (!rangesArray.length || (showCalInRanges && !singleDatePicker()))) {
         <div class="buttons">
             <div class="buttons_input">
-                @if (showClearButton) {
+                @if (showClearButton()) {
                     <button mat-raised-button type="button" [title]="locale.clearLabel" (click)="clear()">
                         <span class="clear-button">
                             {{ locale.clearLabel }}
@@ -432,7 +432,7 @@
                         </span>
                     </button>
                 }
-                @if (showCancel) {
+                @if (showCancel()) {
                     <button mat-raised-button (click)="clickCancel()">{{ locale.cancelLabel }}</button>
                 }
                 <button [disabled]="applyBtn.disabled" mat-raised-button color="primary" (click)="clickApply($event)">

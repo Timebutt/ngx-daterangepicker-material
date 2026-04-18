@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, inject, NgModule, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -20,6 +20,11 @@ import { DocsSiteTheme, ThemeStorage } from './theme-storage/theme-storage';
     standalone: false,
 })
 export class ThemePicker implements OnInit, OnDestroy {
+    styleManager = inject(StyleManager);
+    private _themeStorage = inject(ThemeStorage);
+    private _activatedRoute = inject(ActivatedRoute);
+    private liveAnnouncer = inject(LiveAnnouncer);
+
     private _queryParamSubscription = Subscription.EMPTY;
     currentTheme: DocsSiteTheme;
 
@@ -56,14 +61,10 @@ export class ThemePicker implements OnInit, OnDestroy {
         },
     ];
 
-    constructor(
-        public styleManager: StyleManager,
-        private _themeStorage: ThemeStorage,
-        private _activatedRoute: ActivatedRoute,
-        private liveAnnouncer: LiveAnnouncer,
-        iconRegistry: MatIconRegistry,
-        sanitizer: DomSanitizer,
-    ) {
+    constructor() {
+        const iconRegistry = inject(MatIconRegistry);
+        const sanitizer = inject(DomSanitizer);
+
         iconRegistry.addSvgIcon('theme-example', sanitizer.bypassSecurityTrustResourceUrl('assets/img/theme-demo-icon.svg'));
         const themeName = this._themeStorage.getStoredThemeName();
         if (themeName) {

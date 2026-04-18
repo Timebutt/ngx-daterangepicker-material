@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import moment from 'moment';
 import { LocaleConfig } from '../../../../src/daterangepicker';
@@ -25,6 +25,8 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
     standalone: false,
 })
 export class ReactiveFormMultiSelectExample {
+    private fb = inject(FormBuilder);
+
     form = this.fb.group({
         selected: [
             {
@@ -38,8 +40,6 @@ export class ReactiveFormMultiSelectExample {
         format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
         displayFormat: 'YYYY-MM-DD',
     };
-
-    constructor(private fb: FormBuilder) {}
 
     submit(): void {
         console.log(this.form.value);

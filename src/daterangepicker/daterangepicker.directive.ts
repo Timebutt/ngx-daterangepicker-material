@@ -5,16 +5,17 @@ import {
     ComponentRef,
     Directive,
     ElementRef,
-    EventEmitter,
     Input,
     KeyValueDiffers,
     OnChanges,
     OnDestroy,
     OnInit,
-    Output,
     SimpleChanges,
     ViewContainerRef,
     forwardRef,
+    inject,
+    input,
+    output,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import moment from 'moment';
@@ -41,6 +42,13 @@ import { LocaleConfig } from './daterangepicker.config';
     standalone: false,
 })
 export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
+    viewContainerRef = inject(ViewContainerRef);
+    _changeDetectorRef = inject(ChangeDetectorRef);
+    private _el = inject(ElementRef);
+    private differs = inject(KeyValueDiffers);
+    private elementRef = inject(ElementRef);
+    private overlay = inject(Overlay);
+
     private _onChange = Function.prototype;
     private _onTouched = Function.prototype;
     private _validatorChange = Function.prototype;
@@ -48,70 +56,39 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private overlayRef: OverlayRef;
     private componentRef: ComponentRef<DaterangepickerComponent>;
 
-    @Input()
-    minDate: moment.Moment;
-    @Input()
-    maxDate: moment.Moment;
-    @Input()
-    autoApply: boolean;
-    @Input()
-    alwaysShowCalendars: boolean;
-    @Input()
-    showCustomRangeLabel: boolean;
-    @Input()
-    linkedCalendars: boolean;
-    @Input()
-    dateLimit: number = null;
-    @Input()
-    singleDatePicker: boolean;
-    @Input()
-    showWeekNumbers: boolean;
-    @Input()
-    showISOWeekNumbers: boolean;
-    @Input()
-    showDropdowns: boolean;
-    @Input()
-    isInvalidDate = (date: moment.Moment) => false;
-    @Input()
-    isCustomDate = (date: moment.Moment) => false;
-    @Input()
-    isTooltipDate = (date: moment.Moment) => null;
-    @Input()
-    showClearButton: boolean;
-    @Input()
-    customRangeDirection: boolean;
-    @Input()
-    ranges = {};
-    @Input()
-    opens: 'left' | 'center' | 'right' = 'center';
-    @Input()
-    drops: 'up' | 'down' = 'down';
+    readonly minDate = input<moment.Moment>(undefined);
+    readonly maxDate = input<moment.Moment>(undefined);
+    readonly autoApply = input<boolean>(undefined);
+    readonly alwaysShowCalendars = input<boolean>(undefined);
+    readonly showCustomRangeLabel = input<boolean>(undefined);
+    readonly linkedCalendars = input<boolean>(undefined);
+    readonly dateLimit = input<number>(null);
+    readonly singleDatePicker = input<boolean>(undefined);
+    readonly showWeekNumbers = input<boolean>(undefined);
+    readonly showISOWeekNumbers = input<boolean>(undefined);
+    readonly showDropdowns = input<boolean>(undefined);
+    readonly isInvalidDate = input((date: moment.Moment) => false);
+    readonly isCustomDate = input((date: moment.Moment) => false);
+    readonly isTooltipDate = input((date: moment.Moment) => null);
+    readonly showClearButton = input<boolean>(undefined);
+    readonly customRangeDirection = input<boolean>(undefined);
+    readonly ranges = input({});
+    readonly opens = input<'left' | 'center' | 'right'>('center');
+    readonly drops = input<'up' | 'down'>('down');
     firstMonthDayClass: string;
-    @Input()
-    lastMonthDayClass: string;
-    @Input()
-    emptyWeekRowClass: string;
-    @Input()
-    firstDayOfNextMonthClass: string;
-    @Input()
-    lastDayOfPreviousMonthClass: string;
-    @Input()
-    keepCalendarOpeningWithRange: boolean;
-    @Input()
-    showRangeLabelOnInput: boolean;
-    @Input()
-    showCancel = false;
-    @Input()
-    lockStartDate = false;
-    @Input()
-    timePicker = false;
-    @Input()
-    timePicker24Hour = false;
-    @Input()
-    timePickerIncrement = 1;
-    @Input()
-    timePickerSeconds = false;
-    @Input() closeOnAutoApply = true;
+    readonly lastMonthDayClass = input<string>(undefined);
+    readonly emptyWeekRowClass = input<string>(undefined);
+    readonly firstDayOfNextMonthClass = input<string>(undefined);
+    readonly lastDayOfPreviousMonthClass = input<string>(undefined);
+    readonly keepCalendarOpeningWithRange = input<boolean>(undefined);
+    readonly showRangeLabelOnInput = input<boolean>(undefined);
+    readonly showCancel = input(false);
+    readonly lockStartDate = input(false);
+    readonly timePicker = input(false);
+    readonly timePicker24Hour = input(false);
+    readonly timePickerIncrement = input(1);
+    readonly timePickerSeconds = input(false);
+    readonly closeOnAutoApply = input(true);
     defaultLocale: LocaleConfig = {
         direction: 'ltr',
         separator: ' - ',
@@ -131,8 +108,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     get locale(): any {
         return this._locale;
     }
-    @Input()
-    private _endKey = 'endDate';
+    private readonly _endKey = input('endDate');
     private _startKey = 'startDate';
     @Input() set startKey(value) {
         if (value !== null) {
@@ -159,28 +135,32 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    @Output('change') onChange: EventEmitter<{ startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
-    @Output('rangeClicked') rangeClicked: EventEmitter<{ label: string; dates: [moment.Moment, moment.Moment] }> = new EventEmitter();
-    @Output('datesUpdated') datesUpdated: EventEmitter<{ startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<{ startDate: moment.Moment }> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<{ endDate: moment.Moment }> = new EventEmitter();
+    readonly onChange = output<{
+        startDate: moment.Moment;
+        endDate: moment.Moment;
+    }>({ alias: 'change' });
+    readonly rangeClicked = output<{
+        label: string;
+        dates: [moment.Moment, moment.Moment];
+    }>({ alias: 'rangeClicked' });
+    readonly datesUpdated = output<{
+        startDate: moment.Moment;
+        endDate: moment.Moment;
+    }>({ alias: 'datesUpdated' });
+    readonly startDateChanged = output<{
+        startDate: moment.Moment;
+    }>();
+    readonly endDateChanged = output<{
+        endDate: moment.Moment;
+    }>();
 
-    destroy$ = new Subject<void>();
+    readonly destroy$ = new Subject<void>();
 
-    constructor(
-        public viewContainerRef: ViewContainerRef,
-        public _changeDetectorRef: ChangeDetectorRef,
-        private _el: ElementRef,
-        private differs: KeyValueDiffers,
-        private elementRef: ElementRef,
-        private overlay: Overlay,
-    ) {}
-
-    ngOnInit(): void {
+    ngOnInit() {
         this._buildLocale();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes: SimpleChanges) {
         for (const change in changes) {
             if (changes.hasOwnProperty(change)) {
                 if (this.componentRef && this.notForChangesProperty.indexOf(change) === -1) {
@@ -190,21 +170,21 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy() {
         this.destroy$.next();
     }
 
-    onBlur(): void {
+    onBlur() {
         this._onTouched();
     }
 
-    open(): void {
+    open() {
         if (this.overlayRef) {
             this.hide();
         }
 
         let originX, overlayX;
-        switch (this.opens) {
+        switch (this.opens()) {
             case 'left':
                 originX = 'start';
                 overlayX = 'end';
@@ -230,9 +210,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 .withPositions([
                     {
                         originX,
-                        originY: this.drops === 'up' ? 'top' : 'bottom',
+                        originY: this.drops() === 'up' ? 'top' : 'bottom',
                         overlayX,
-                        overlayY: this.drops === 'up' ? 'bottom' : 'top',
+                        overlayY: this.drops() === 'up' ? 'bottom' : 'top',
                     },
                 ]),
         });
@@ -240,39 +220,39 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
 
         // Assign all inputs
-        this.componentRef.instance.minDate = this.minDate;
-        this.componentRef.instance.maxDate = this.maxDate;
-        this.componentRef.instance.autoApply = this.autoApply;
-        this.componentRef.instance.alwaysShowCalendars = this.alwaysShowCalendars;
-        this.componentRef.instance.showCustomRangeLabel = this.showCustomRangeLabel;
-        this.componentRef.instance.linkedCalendars = this.linkedCalendars;
-        this.componentRef.instance.dateLimit = this.dateLimit;
-        this.componentRef.instance.singleDatePicker = this.singleDatePicker;
-        this.componentRef.instance.showWeekNumbers = this.showWeekNumbers;
-        this.componentRef.instance.showISOWeekNumbers = this.showISOWeekNumbers;
-        this.componentRef.instance.showDropdowns = this.showDropdowns;
-        this.componentRef.instance.showClearButton = this.showClearButton;
-        this.componentRef.instance.customRangeDirection = this.customRangeDirection;
-        this.componentRef.instance.ranges = this.ranges;
+        this.componentRef.instance.minDate = this.minDate();
+        this.componentRef.instance.maxDate = this.maxDate();
+        this.componentRef.instance.autoApply = this.autoApply();
+        this.componentRef.instance.alwaysShowCalendars = this.alwaysShowCalendars();
+        this.componentRef.instance.showCustomRangeLabel = this.showCustomRangeLabel();
+        this.componentRef.instance.linkedCalendars = this.linkedCalendars();
+        this.componentRef.instance.dateLimit = this.dateLimit();
+        this.componentRef.instance.singleDatePicker = this.singleDatePicker();
+        this.componentRef.instance.showWeekNumbers = this.showWeekNumbers();
+        this.componentRef.instance.showISOWeekNumbers = this.showISOWeekNumbers();
+        this.componentRef.instance.showDropdowns = this.showDropdowns();
+        this.componentRef.instance.showClearButton = this.showClearButton();
+        this.componentRef.instance.customRangeDirection = this.customRangeDirection();
+        this.componentRef.instance.ranges = this.ranges();
         this.componentRef.instance.firstMonthDayClass = this.firstMonthDayClass;
-        this.componentRef.instance.lastMonthDayClass = this.lastMonthDayClass;
-        this.componentRef.instance.emptyWeekRowClass = this.emptyWeekRowClass;
-        this.componentRef.instance.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
-        this.componentRef.instance.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
-        this.componentRef.instance.keepCalendarOpeningWithRange = this.keepCalendarOpeningWithRange;
-        this.componentRef.instance.showRangeLabelOnInput = this.showRangeLabelOnInput;
-        this.componentRef.instance.showCancel = this.showCancel;
-        this.componentRef.instance.lockStartDate = this.lockStartDate;
-        this.componentRef.instance.timePicker = this.timePicker;
-        this.componentRef.instance.timePicker24Hour = this.timePicker24Hour;
-        this.componentRef.instance.timePickerIncrement = this.timePickerIncrement;
-        this.componentRef.instance.timePickerSeconds = this.timePickerSeconds;
-        this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply;
+        this.componentRef.instance.lastMonthDayClass = this.lastMonthDayClass();
+        this.componentRef.instance.emptyWeekRowClass = this.emptyWeekRowClass();
+        this.componentRef.instance.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass();
+        this.componentRef.instance.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass();
+        this.componentRef.instance.keepCalendarOpeningWithRange = this.keepCalendarOpeningWithRange();
+        this.componentRef.instance.showRangeLabelOnInput = this.showRangeLabelOnInput();
+        this.componentRef.instance.showCancel = this.showCancel();
+        this.componentRef.instance.lockStartDate = this.lockStartDate();
+        this.componentRef.instance.timePicker = this.timePicker();
+        this.componentRef.instance.timePicker24Hour = this.timePicker24Hour();
+        this.componentRef.instance.timePickerIncrement = this.timePickerIncrement();
+        this.componentRef.instance.timePickerSeconds = this.timePickerSeconds();
+        this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply();
         this.componentRef.instance.locale = this.locale;
 
-        this.componentRef.instance.isInvalidDate = this.isInvalidDate;
-        this.componentRef.instance.isCustomDate = this.isCustomDate;
-        this.componentRef.instance.isTooltipDate = this.isTooltipDate;
+        this.componentRef.instance.isInvalidDate = this.isInvalidDate();
+        this.componentRef.instance.isCustomDate = this.isCustomDate();
+        this.componentRef.instance.isTooltipDate = this.isTooltipDate();
 
         // Set the value
         this.setValue(this.value);
@@ -346,7 +326,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    hide(): void {
+    hide() {
         if (this.overlayRef) {
             this.overlayRef.dispose();
             this.destroy$.next();
@@ -355,7 +335,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    toggle(): void {
+    toggle() {
         if (this.overlayRef) {
             this.hide();
         } else {
@@ -363,13 +343,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    clear(): void {
+    clear() {
         if (this.componentRef) {
             this.componentRef.instance.clear();
         }
     }
 
-    writeValue(value: { startDate: moment.Moment | string; endDate: moment.Moment | string } | moment.Moment): void {
+    writeValue(value: { startDate: moment.Moment | string; endDate: moment.Moment | string } | moment.Moment) {
         if (moment.isMoment(value)) {
             this.value = { startDate: value };
         } else if (value) {
@@ -380,22 +360,22 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.setValue(this.value);
     }
 
-    registerOnChange(fn): void {
+    registerOnChange(fn) {
         this._onChange = fn;
     }
 
-    registerOnTouched(fn): void {
+    registerOnTouched(fn) {
         this._onTouched = fn;
     }
 
-    private setValue(value: { startDate: moment.Moment; endDate: moment.Moment }): void {
+    private setValue(value: { startDate: moment.Moment; endDate: moment.Moment }) {
         if (this.componentRef) {
             if (value) {
                 if (value[this._startKey]) {
                     this.componentRef.instance.setStartDate(value[this._startKey]);
                 }
-                if (value[this._endKey]) {
-                    this.componentRef.instance.setEndDate(value[this._endKey]);
+                if (value[this._endKey()]) {
+                    this.componentRef.instance.setEndDate(value[this._endKey()]);
                 }
                 this.componentRef.instance.calculateChosenLabel();
                 if (this.componentRef.instance.chosenLabel) {
@@ -409,7 +389,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._el.nativeElement.value = value ? this.calculateChosenLabel(value.startDate, value.endDate) : null;
     }
 
-    inputChanged(e): void {
+    inputChanged(e) {
         if (e.target.tagName.toLowerCase() !== 'input') {
             return;
         }
@@ -426,7 +406,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 start = moment(dateString[0], this.componentRef.instance.locale.format);
                 end = moment(dateString[1], this.componentRef.instance.locale.format);
             }
-            if (this.singleDatePicker || start === null || end === null) {
+            if (this.singleDatePicker() || start === null || end === null) {
                 start = moment(e.target.value, this.componentRef.instance.locale.format);
                 end = start;
             }
@@ -442,7 +422,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     calculateChosenLabel(startDate: moment.Moment, endDate: moment.Moment): string {
         const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
 
-        if (this.singleDatePicker) {
+        if (this.singleDatePicker()) {
             return startDate.format(format);
         }
 
@@ -459,7 +439,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private _buildLocale() {
         this.locale = { ...this.locale };
         if (!this.locale.format) {
-            if (this.timePicker) {
+            if (this.timePicker()) {
                 this.locale.format = moment.localeData().longDateFormat('lll');
             } else {
                 this.locale.format = moment.localeData().longDateFormat('L');

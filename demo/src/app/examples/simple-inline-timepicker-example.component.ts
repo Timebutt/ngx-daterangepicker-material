@@ -14,8 +14,7 @@ import moment from 'moment';
             [timePicker]="true"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"
             (chosenDate)="chosenDateTime($event)"
-        >
-        </ngx-daterangepicker-material>
+        />
         <div>Chosen date (after changes): {{ inlineDateTime | json }}</div>
     `,
     standalone: false,
