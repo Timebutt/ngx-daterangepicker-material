@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Component, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -16,9 +16,9 @@ import { ThemeStorage } from '../theme-picker/theme-storage/theme-storage';
 export class NavBar {}
 
 @NgModule({
-    imports: [CommonModule, HttpClientModule, MatButtonModule, MatMenuModule, RouterModule, ThemePickerModule],
     exports: [NavBar],
     declarations: [NavBar],
-    providers: [StyleManager, ThemeStorage],
+    imports: [CommonModule, MatButtonModule, MatMenuModule, RouterModule, ThemePickerModule],
+    providers: [StyleManager, ThemeStorage, provideHttpClient(withInterceptorsFromDi())],
 })
 export class NavBarModule {}
