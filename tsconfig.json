@@ -1,27 +1,21 @@
 {
     "compilerOptions": {
-      "importHelpers": true,
-      "target": "ES2022",
-      "module": "esnext",
-      "moduleResolution": "bundler",
-      "esModuleInterop": true,
-      "resolveJsonModule": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "removeComments": true,
-      "noImplicitAny": false,
-      "declaration": true,
-      "sourceMap": false,
-      "outDir": "dist",
-      "lib": [
-        "es2018",
-        "dom"
-      ],
-      "baseUrl": "./",
-      "types": [
-        "node"
-      ],
-      "useDefineForClassFields": false
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "noImplicitAny": false,
+        "declaration": true,
+        "sourceMap": false,
+        "outDir": "dist",
+        "baseUrl": "./",
+        "types": ["node"],
+        "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,
